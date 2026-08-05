@@ -13,7 +13,7 @@ All responses are wrapped in a common envelope:
 {
   "success": true,
   "message": "Customers fetched",
-  "data": { },
+  "data": {},
   "timestamp": "2026-08-02T10:15:30"
 }
 ```
@@ -27,14 +27,17 @@ error message.
 ## Authentication
 
 ### POST /login
+
 Authenticates a user and starts a session.
 
 Request body:
+
 ```json
 { "username": "admin", "password": "Admin@123" }
 ```
 
 Response `200 OK`:
+
 ```json
 {
   "success": true,
@@ -52,9 +55,11 @@ Response `200 OK`:
 `401 Unauthorized` on bad credentials.
 
 ### POST /logout
+
 Invalidates the current session. No body required.
 
 ### GET /me
+
 Returns the currently authenticated user (used by the frontend to verify a
 live session on page load). `401` if not authenticated.
 
@@ -62,15 +67,16 @@ live session on page load). `401` if not authenticated.
 
 ## Customers
 
-| Method | Path              | Roles allowed                | Description          |
-|--------|-------------------|-------------------------------|-----------------------|
-| GET    | /customers        | any authenticated user        | List all customers    |
-| GET    | /customers/{id}   | any authenticated user        | Get one customer      |
-| POST   | /customers        | ADMIN, SUPERVISOR, USER       | Create a customer     |
-| PUT    | /customers/{id}   | ADMIN, SUPERVISOR, USER       | Update a customer     |
-| DELETE | /customers/{id}   | ADMIN, SUPERVISOR             | Delete a customer     |
+| Method | Path            | Roles allowed           | Description        |
+| ------ | --------------- | ----------------------- | ------------------ |
+| GET    | /customers      | any authenticated user  | List all customers |
+| GET    | /customers/{id} | any authenticated user  | Get one customer   |
+| POST   | /customers      | ADMIN, SUPERVISOR, USER | Create a customer  |
+| PUT    | /customers/{id} | ADMIN, SUPERVISOR, USER | Update a customer  |
+| DELETE | /customers/{id} | ADMIN, SUPERVISOR       | Delete a customer  |
 
 Customer object:
+
 ```json
 {
   "id": 1,
@@ -89,15 +95,16 @@ Customer object:
 
 ## Leads
 
-| Method | Path         | Roles allowed            | Description       |
-|--------|--------------|---------------------------|--------------------|
-| GET    | /leads       | any authenticated user    | List all leads     |
-| GET    | /leads/{id}  | any authenticated user    | Get one lead       |
-| POST   | /leads       | ADMIN, SUPERVISOR, USER   | Create a lead      |
-| PUT    | /leads/{id}  | ADMIN, SUPERVISOR, USER   | Update a lead      |
-| DELETE | /leads/{id}  | ADMIN, SUPERVISOR         | Delete a lead       |
+| Method | Path        | Roles allowed           | Description    |
+| ------ | ----------- | ----------------------- | -------------- |
+| GET    | /leads      | any authenticated user  | List all leads |
+| GET    | /leads/{id} | any authenticated user  | Get one lead   |
+| POST   | /leads      | ADMIN, SUPERVISOR, USER | Create a lead  |
+| PUT    | /leads/{id} | ADMIN, SUPERVISOR, USER | Update a lead  |
+| DELETE | /leads/{id} | ADMIN, SUPERVISOR       | Delete a lead  |
 
 Lead object:
+
 ```json
 {
   "id": 1,
@@ -120,15 +127,16 @@ Valid `status`: `NEW`, `CONTACTED`, `QUALIFIED`, `PROPOSAL`, `WON`, `LOST`
 
 ## Tasks
 
-| Method | Path         | Roles allowed            | Description       |
-|--------|--------------|---------------------------|--------------------|
-| GET    | /tasks       | any authenticated user    | List all tasks     |
-| GET    | /tasks/{id}  | any authenticated user    | Get one task       |
-| POST   | /tasks       | ADMIN, SUPERVISOR, USER   | Create a task      |
-| PUT    | /tasks/{id}  | ADMIN, SUPERVISOR, USER   | Update a task      |
-| DELETE | /tasks/{id}  | ADMIN, SUPERVISOR         | Delete a task       |
+| Method | Path        | Roles allowed           | Description    |
+| ------ | ----------- | ----------------------- | -------------- |
+| GET    | /tasks      | any authenticated user  | List all tasks |
+| GET    | /tasks/{id} | any authenticated user  | Get one task   |
+| POST   | /tasks      | ADMIN, SUPERVISOR, USER | Create a task  |
+| PUT    | /tasks/{id} | ADMIN, SUPERVISOR, USER | Update a task  |
+| DELETE | /tasks/{id} | ADMIN, SUPERVISOR       | Delete a task  |
 
 Task object:
+
 ```json
 {
   "id": 1,
@@ -150,15 +158,16 @@ Valid `priority`: `LOW`, `MEDIUM`, `HIGH`, `URGENT`
 
 ## Employees
 
-| Method | Path             | Roles allowed        | Description           |
-|--------|------------------|------------------------|-------------------------|
-| GET    | /employees       | any authenticated user | List all employees      |
-| GET    | /employees/{id}  | any authenticated user | Get one employee        |
-| POST   | /employees       | ADMIN, SUPERVISOR      | Create an employee      |
-| PUT    | /employees/{id}  | ADMIN, SUPERVISOR      | Update an employee      |
-| DELETE | /employees/{id}  | ADMIN                  | Delete an employee       |
+| Method | Path            | Roles allowed          | Description        |
+| ------ | --------------- | ---------------------- | ------------------ |
+| GET    | /employees      | any authenticated user | List all employees |
+| GET    | /employees/{id} | any authenticated user | Get one employee   |
+| POST   | /employees      | ADMIN, SUPERVISOR      | Create an employee |
+| PUT    | /employees/{id} | ADMIN, SUPERVISOR      | Update an employee |
+| DELETE | /employees/{id} | ADMIN                  | Delete an employee |
 
 Employee object:
+
 ```json
 {
   "id": 1,
@@ -179,12 +188,13 @@ Employee object:
 
 ## Reports
 
-| Method | Path      | Roles allowed          | Description                |
-|--------|-----------|---------------------------|------------------------------|
-| GET    | /reports  | any authenticated user    | List all generated reports   |
-| POST   | /reports  | ADMIN, SUPERVISOR         | Generate/save a new report   |
+| Method | Path     | Roles allowed          | Description                |
+| ------ | -------- | ---------------------- | -------------------------- |
+| GET    | /reports | any authenticated user | List all generated reports |
+| POST   | /reports | ADMIN, SUPERVISOR      | Generate/save a new report |
 
 Report object:
+
 ```json
 {
   "id": 1,
@@ -200,12 +210,13 @@ Report object:
 
 ## Settings
 
-| Method | Path       | Roles allowed | Description                       |
-|--------|------------|-----------------|--------------------------------------|
-| GET    | /settings  | any authenticated user | Fetch company settings (singleton) |
-| PUT    | /settings  | ADMIN           | Update company settings              |
+| Method | Path      | Roles allowed          | Description                        |
+| ------ | --------- | ---------------------- | ---------------------------------- |
+| GET    | /settings | any authenticated user | Fetch company settings (singleton) |
+| PUT    | /settings | ADMIN                  | Update company settings            |
 
 Setting object:
+
 ```json
 {
   "id": 1,
@@ -225,6 +236,7 @@ Setting object:
 ## Dashboard
 
 ### GET /dashboard/stats
+
 Returns aggregated statistics for the dashboard: total customers, total
 leads, pending tasks, total employees, total revenue (sum of `WON` lead
 values), leads grouped by stage, tasks grouped by status, recent activity
@@ -259,20 +271,42 @@ values), leads grouped by stage, tasks grouped by status, recent activity
 }
 ```
 
-| Status | Meaning                                             |
-|--------|------------------------------------------------------|
-| 400    | Validation failed / bad request                      |
-| 401    | Not authenticated (login required)                    |
-| 403    | Authenticated, but role lacks permission              |
-| 404    | Resource not found                                    |
-| 500    | Unexpected server error                                |
+| Status | Meaning                                  |
+| ------ | ---------------------------------------- |
+| 400    | Validation failed / bad request          |
+| 401    | Not authenticated (login required)       |
+| 403    | Authenticated, but role lacks permission |
+| 404    | Resource not found                       |
+| 500    | Unexpected server error                  |
 
 ---
 
 ## Roles
 
-| Role         | Summary                                                                 |
-|--------------|--------------------------------------------------------------------------|
-| ADMIN        | Full access — including deleting employees and editing settings          |
-| SUPERVISOR   | Manages customers/leads/tasks/employees, generates reports                |
-| USER         | Creates/updates customers, leads and tasks; read-only elsewhere           |
+| Role       | Summary                                                         |
+| ---------- | --------------------------------------------------------------- |
+| ADMIN      | Full access — including deleting employees and editing settings |
+| SUPERVISOR | Manages customers/leads/tasks/employees, generates reports      |
+| USER       | Creates/updates customers, leads and tasks; read-only elsewhere |
+
+## 📸 Screenshots
+
+### Login Page
+
+![Login](docs/images/login.png)
+
+### Dashboard
+
+![Dashboard](docs/images/dashboard.png)
+
+### Reports
+
+![Reports](docs/images/reports.png)
+
+### AI Assistant
+
+![AI Assistant](docs/images/ai-assistant.png)
+
+### Settings
+
+![Settings](docs/images/settings.png)
