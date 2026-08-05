@@ -186,3 +186,25 @@ frontend UI (`layout.js` hides/disables actions the current role can't use).
 - All list/CRUD endpoints validate input with Jakarta Bean Validation and
   return field-level error messages on `400`.
 - See `docs/API_DOCUMENTATION.md` for the full REST reference.
+
+## 📸 Screenshots
+
+### Login Page
+
+![Login Page](docs/images/Login%20Page.png)
+
+### Dashboard
+
+![Dashboard](docs/images/Dashboard.png)
+
+### Reports
+
+![Reports](docs/images/Reports.png)
+
+### AI Assistant
+
+![AI Assistant](docs/images/AI%20Assistant.png)
+
+### Settings
+
+![Settings](docs/images/Settings.png)
