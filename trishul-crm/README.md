@@ -87,6 +87,7 @@ You have two options:
 ```bash
 mysql -u root -p < database/trishul_crm.sql
 ```
+
 This creates the schema and inserts the same sample data directly. If you
 use this path, either let `DataSeeder` skip re-seeding (it only inserts when
 a table is empty, so it's safe either way) or set
@@ -98,8 +99,8 @@ Edit `backend/src/main/resources/application.properties`:
 
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/trishul_crm?useSSL=false&serverTimezone=UTC
-spring.datasource.username=root
-spring.datasource.password=root
+spring.datasource.username=YOUR_MYSQL_USERNAME
+spring.datasource.password=YOUR_MYSQL_PASSWORD
 ```
 
 ### 3.3 Run the backend
@@ -113,11 +114,11 @@ The API will start on **http://localhost:8080**.
 
 ### 3.4 Demo accounts (seeded automatically)
 
-| Username     | Password     | Role        |
-|--------------|--------------|-------------|
-| admin        | Admin@123    | ADMIN       |
-| supervisor   | Super@123    | SUPERVISOR  |
-| user         | User@123     | USER        |
+| Username   | Password  | Role       |
+| ---------- | --------- | ---------- |
+| admin      | Admin@123 | ADMIN      |
+| supervisor | Super@123 | SUPERVISOR |
+| user       | User@123  | USER       |
 
 ---
 
@@ -126,11 +127,13 @@ The API will start on **http://localhost:8080**.
 The frontend is plain static HTML/CSS/JS — no build step required.
 
 **Option A — VS Code Live Server / any static server**
+
 ```bash
 cd frontend
 npx serve .
 # or: python3 -m http.server 5500
 ```
+
 Then open `http://localhost:5500/login.html`.
 
 **Option B — Open directly in the browser**
@@ -160,15 +163,15 @@ local static server is recommended for consistent cookie behavior.
 
 ## 6. Role-Based Access Control
 
-| Action                          | ADMIN | SUPERVISOR | USER |
-|----------------------------------|:-----:|:----------:|:----:|
-| View all modules                 | ✅    | ✅         | ✅   |
-| Create/Update customers, leads, tasks | ✅ | ✅       | ✅   |
-| Delete customers, leads, tasks   | ✅    | ✅         | ❌   |
-| Create/Update employees          | ✅    | ✅         | ❌   |
-| Delete employees                 | ✅    | ❌         | ❌   |
-| Generate reports                 | ✅    | ✅         | ❌   |
-| Edit company settings            | ✅    | ❌         | ❌   |
+| Action                                | ADMIN | SUPERVISOR | USER |
+| ------------------------------------- | :---: | :--------: | :--: |
+| View all modules                      |  ✅   |     ✅     |  ✅  |
+| Create/Update customers, leads, tasks |  ✅   |     ✅     |  ✅  |
+| Delete customers, leads, tasks        |  ✅   |     ✅     |  ❌  |
+| Create/Update employees               |  ✅   |     ✅     |  ❌  |
+| Delete employees                      |  ✅   |     ❌     |  ❌  |
+| Generate reports                      |  ✅   |     ✅     |  ❌  |
+| Edit company settings                 |  ✅   |     ❌     |  ❌  |
 
 Enforced on both the backend (`SecurityConfig.java`) and reflected in the
 frontend UI (`layout.js` hides/disables actions the current role can't use).
