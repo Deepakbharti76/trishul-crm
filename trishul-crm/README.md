@@ -187,7 +187,7 @@ frontend UI (`layout.js` hides/disables actions the current role can't use).
   return field-level error messages on `400`.
 - See `docs/API_DOCUMENTATION.md` for the full REST reference.
 
-## 📸 Screenshots
+## 8. 📸 Screenshots
 
 ### Login Page
 
