@@ -293,20 +293,20 @@ values), leads grouped by stage, tasks grouped by status, recent activity
 
 ### Login Page
 
-![Login](docs/images/login.png)
+![Login Page](images/Login%20Page.png)
 
 ### Dashboard
 
-![Dashboard](docs/images/dashboard.png)
+![Dashboard](images/Dashboard.png)
 
 ### Reports
 
-![Reports](docs/images/reports.png)
+![Reports](images/Reports.png)
 
 ### AI Assistant
 
-![AI Assistant](docs/images/ai-assistant.png)
+![AI Assistant](images/AI%20Assistant.png)
 
 ### Settings
 
-![Settings](docs/images/settings.png)
+![Settings](images/Settings.png)
