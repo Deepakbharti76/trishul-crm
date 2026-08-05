@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trishul CRM</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .boot-loader { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .boot-spinner { width: 34px; height: 34px; border-radius: 50%; border: 3px solid var(--border-hair); border-top-color: var(--gold-500); animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .boot-loader span { font-size: 13px; color: var(--text-tertiary); letter-spacing: 0.05em; }
+</style>
+</head>
+<body>
+    <div class="boot-loader">
+        <div class="boot-spinner"></div>
+        <span>Loading Trishul CRM…</span>
+    </div>
+
+<script src="js/api.js"></script>
+<script>
+    Api.get('/me')
+        .then(() => { window.location.replace('dashboard.html'); })
+        .catch(() => { window.location.replace('login.html'); });
+</script>
+</body>
+</html>

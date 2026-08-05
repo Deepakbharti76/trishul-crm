@@ -1,0 +1,163 @@
+/* =========================================================================
+   TRISHUL CRM — Animation Library
+   Cinematic opening sequence + shared motion utilities
+   ========================================================================= */
+
+/* ---------- Cinematic opening (login.html) ---------- */
+.cinematic-stage {
+    position: fixed;
+    inset: 0;
+    background: var(--bg-void);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.cinematic-stage.hide {
+    animation: stageFade 0.9s var(--ease-in-out) forwards;
+    pointer-events: none;
+}
+@keyframes stageFade {
+    to { opacity: 0; visibility: hidden; }
+}
+
+.cinematic-rays {
+    position: absolute;
+    inset: -20%;
+    background:
+        conic-gradient(from 90deg at 50% 50%,
+            transparent 0deg, rgba(201,151,47,0.06) 8deg, transparent 16deg,
+            transparent 40deg, rgba(34,184,164,0.05) 48deg, transparent 56deg,
+            transparent 90deg, rgba(201,151,47,0.05) 98deg, transparent 106deg,
+            transparent 180deg, rgba(201,151,47,0.06) 188deg, transparent 196deg,
+            transparent 260deg, rgba(34,184,164,0.05) 268deg, transparent 276deg);
+    animation: raysSpin 30s linear infinite;
+    opacity: 0;
+    animation: raysSpin 30s linear infinite, raysFadeIn 2s ease-out forwards;
+}
+@keyframes raysSpin { to { transform: rotate(360deg); } }
+@keyframes raysFadeIn { to { opacity: 1; } }
+
+.cinematic-core { position: relative; display: flex; flex-direction: column; align-items: center; z-index: 2; }
+
+.cinematic-trident {
+    width: 130px;
+    height: 170px;
+    opacity: 0;
+    transform: scale(0.7) translateY(10px);
+}
+
+.cinematic-trident.play {
+    animation: tridentRise 1.4s var(--ease-out) forwards;
+}
+@keyframes tridentRise {
+    0% { opacity: 0; transform: scale(0.6) translateY(20px); filter: drop-shadow(0 0 0 transparent); }
+    60% { opacity: 1; }
+    100% { opacity: 1; transform: scale(1) translateY(0); filter: drop-shadow(0 0 26px var(--gold-glow)); }
+}
+
+.trident-path {
+    stroke: url(#tridentGradient);
+    stroke-width: 3.2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 900;
+    stroke-dashoffset: 900;
+}
+.cinematic-trident.play .trident-path {
+    animation: drawTrident 1.6s var(--ease-out) forwards;
+}
+@keyframes drawTrident {
+    to { stroke-dashoffset: 0; }
+}
+
+.cinematic-wordmark {
+    margin-top: 28px;
+    font-family: var(--font-display);
+    font-size: 26px;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    opacity: 0;
+    background: linear-gradient(120deg, var(--gold-100), var(--gold-500));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.cinematic-wordmark.play { animation: wordFadeUp 0.9s var(--ease-out) 1.3s forwards; }
+@keyframes wordFadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.cinematic-tagline {
+    margin-top: 8px;
+    font-size: 12.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    opacity: 0;
+}
+.cinematic-tagline.play { animation: wordFadeUp 0.9s var(--ease-out) 1.6s forwards; }
+
+.cinematic-progress {
+    margin-top: 34px;
+    width: 200px;
+    height: 2px;
+    background: var(--border-hair);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    opacity: 0;
+}
+.cinematic-progress.play { animation: wordFadeUp 0.6s var(--ease-out) 1.8s forwards; }
+.cinematic-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--gold-500), var(--teal-300));
+    border-radius: var(--radius-full);
+}
+.cinematic-progress.play .cinematic-progress-fill { animation: fillBar 1.4s var(--ease-in-out) 1.9s forwards; }
+@keyframes fillBar { to { width: 100%; } }
+
+/* ---------- Auth page reveal ---------- */
+.auth-shell {
+    opacity: 0;
+    transform: translateY(14px);
+}
+.auth-shell.reveal {
+    animation: authReveal 0.7s var(--ease-out) forwards;
+}
+@keyframes authReveal { to { opacity: 1; transform: translateY(0); } }
+
+/* ---------- General page-load fade ---------- */
+.fade-in { animation: fadeIn 0.5s var(--ease-out) both; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.stagger > * { animation: fadeIn 0.5s var(--ease-out) both; }
+.stagger > *:nth-child(1) { animation-delay: 0.03s; }
+.stagger > *:nth-child(2) { animation-delay: 0.08s; }
+.stagger > *:nth-child(3) { animation-delay: 0.13s; }
+.stagger > *:nth-child(4) { animation-delay: 0.18s; }
+.stagger > *:nth-child(5) { animation-delay: 0.23s; }
+.stagger > *:nth-child(6) { animation-delay: 0.28s; }
+
+/* ---------- Sidebar nav mount ---------- */
+.nav-item { animation: slideIn 0.4s var(--ease-out) both; }
+.nav-item:nth-child(1) { animation-delay: 0.02s; }
+.nav-item:nth-child(2) { animation-delay: 0.05s; }
+.nav-item:nth-child(3) { animation-delay: 0.08s; }
+.nav-item:nth-child(4) { animation-delay: 0.11s; }
+.nav-item:nth-child(5) { animation-delay: 0.14s; }
+.nav-item:nth-child(6) { animation-delay: 0.17s; }
+.nav-item:nth-child(7) { animation-delay: 0.20s; }
+.nav-item:nth-child(8) { animation-delay: 0.23s; }
+.nav-item:nth-child(9) { animation-delay: 0.26s; }
+@keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}

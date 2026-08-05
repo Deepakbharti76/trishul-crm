@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard · Trishul CRM</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+    .chart-card canvas { max-height: 260px; }
+    .mini-chart-wrap { position: relative; height: 220px; }
+    .quick-links { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 18px; }
+    .quick-link {
+        display: flex; flex-direction: column; gap: 10px; padding: 16px;
+        border-radius: var(--radius-md); background: var(--bg-panel-2); border: 1px solid var(--border-hair);
+        transition: all 0.18s var(--ease-out);
+    }
+    .quick-link:hover { border-color: var(--gold-600); transform: translateY(-2px); }
+    .quick-link i { font-size: 17px; color: var(--gold-300); }
+    .quick-link span { font-size: 13px; font-weight: 600; }
+    @media (max-width: 1200px) { .quick-links { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+    <!-- ============== SIDEBAR ============== -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="trishul-mark">
+                <svg viewBox="0 0 120 160" width="22" height="22" fill="none"><path d="M60 152 L60 66 M36 72 L84 72 M60 66 L60 12 M40 72 C 28 56, 24 30, 34 8 M80 72 C 92 56, 96 30, 86 8" stroke="#1a1406" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="brand-text"><strong>Trishul CRM</strong><span>Business Deck</span></div>
+        </div>
+
+        <div class="nav-section-label">Overview</div>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="dashboard.html"><i class="fa-solid fa-gauge-high"></i> Dashboard</a></li>
+        </ul>
+
+        <div class="nav-section-label">CRM</div>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="customers.html"><i class="fa-solid fa-address-book"></i> Customers</a></li>
+            <li class="nav-item"><a href="leads.html"><i class="fa-solid fa-bullseye"></i> Leads</a></li>
+            <li class="nav-item"><a href="tasks.html"><i class="fa-solid fa-list-check"></i> Tasks</a></li>
+        </ul>
+
+        <div class="nav-section-label">Organization</div>
+        <ul class="nav-list">
+            <li class="nav-item" data-nav="employees"><a href="employees.html"><i class="fa-solid fa-users"></i> Employees</a></li>
+        </ul>
+
+        <div class="nav-section-label">Insights</div>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="reports.html"><i class="fa-solid fa-chart-pie"></i> Reports</a></li>
+            <li class="nav-item"><a href="ai-assistant.html"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Assistant</a></li>
+        </ul>
+
+        <div class="nav-section-label">System</div>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <div class="user-chip">
+                <div class="avatar-ring" id="sidebarAvatar">--</div>
+                <div class="user-chip-info">
+                    <strong id="sidebarUserName">Loading…</strong>
+                    <span id="sidebarUserRole">—</span>
+                </div>
+            </div>
+            <button class="logout-btn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+        </div>
+    </aside>
+
+    <!-- ============== MAIN ============== -->
+    <div class="main-content">
+        <header class="topbar">
+            <div style="display:flex; align-items:center; gap:14px;">
+                <button class="icon-btn" id="menuToggle" style="display:none;"><i class="fa-solid fa-bars"></i></button>
+                <div class="page-heading">
+                    <h1>Dashboard</h1>
+                    <p>A live overview of your business, right now.</p>
+                </div>
+            </div>
+            <div class="topbar-actions">
+                <button class="icon-btn"><i class="fa-solid fa-bell"></i><span class="badge-dot"></span></button>
+                <button class="icon-btn" onclick="window.location.href='ai-assistant.html'"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+            </div>
+        </header>
+
+        <main class="content-area">
+            <div class="stat-grid stagger" id="statGrid">
+                <div class="loader-row" style="grid-column: 1/-1;"><span class="spinner"></span> Loading dashboard…</div>
+            </div>
+
+            <div class="grid-2 fade-in">
+                <div class="panel chart-card">
+                    <div class="panel-header">
+                        <div><h3>Revenue Trend</h3><p>Won deal value across recent months</p></div>
+                    </div>
+                    <canvas id="revenueChart"></canvas>
+                </div>
+                <div class="panel">
+                    <div class="panel-header">
+                        <div><h3>Leads by Stage</h3><p>Pipeline distribution</p></div>
+                    </div>
+                    <div class="mini-chart-wrap"><canvas id="leadsChart"></canvas></div>
+                </div>
+            </div>
+
+            <div class="grid-2 fade-in" style="margin-top: 18px;">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div><h3>Recent Activity</h3><p>Latest leads and tasks across the team</p></div>
+                    </div>
+                    <div class="activity-list" id="activityList">
+                        <div class="loader-row"><span class="spinner"></span> Loading…</div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-header">
+                        <div><h3>Tasks by Status</h3><p>Current workload snapshot</p></div>
+                    </div>
+                    <div class="mini-chart-wrap"><canvas id="tasksChart"></canvas></div>
+                </div>
+            </div>
+
+            <div class="panel fade-in" style="margin-top: 18px;">
+                <div class="panel-header"><div><h3>Quick Actions</h3><p>Jump straight into a module</p></div></div>
+                <div class="quick-links">
+                    <a class="quick-link" href="customers.html"><i class="fa-solid fa-address-book"></i><span>Add Customer</span></a>
+                    <a class="quick-link" href="leads.html"><i class="fa-solid fa-bullseye"></i><span>New Lead</span></a>
+                    <a class="quick-link" href="tasks.html"><i class="fa-solid fa-list-check"></i><span>Create Task</span></a>
+                    <a class="quick-link" href="reports.html"><i class="fa-solid fa-chart-pie"></i><span>View Reports</span></a>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>
