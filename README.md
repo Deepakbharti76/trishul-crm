@@ -131,7 +131,7 @@ The frontend is plain static HTML/CSS/JS — no build step required.
 ```bash
 cd frontend
 npx serve .
-# or: python3 -m http.server 5500
+
 ```
 
 Then open `http://localhost:5500/login.html`.
