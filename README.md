@@ -189,22 +189,22 @@ frontend UI (`layout.js` hides/disables actions the current role can't use).
 
 ## 8. 📸 Screenshots
 
-### Login Page
+### 🔐 Login Page
 
 ![Login Page](docs/images/Login%20Page.png)
 
-### Dashboard
+### 📊 Dashboard
 
 ![Dashboard](docs/images/Dashboard.png)
 
-### Reports
+### 📈 Reports
 
 ![Reports](docs/images/Reports.png)
 
-### AI Assistant
+### 🤖 AI Assistant
 
 ![AI Assistant](docs/images/AI%20Assistant.png)
 
-### Settings
+### ⚙️ Settings
 
 ![Settings](docs/images/Settings.png)
