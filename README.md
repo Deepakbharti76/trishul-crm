@@ -280,12 +280,6 @@ local development only.
 
 ---
 
-## 📄 License
-
-This project is licensed under the MIT License.
-
----
-
 <div align="center">
 
 Built with ☕ Java, 🍃 Spring Boot, and a lot of dark-mode design.
