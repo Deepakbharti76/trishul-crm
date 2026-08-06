@@ -187,8 +187,12 @@ npx serve .
 Open **http://localhost:5500/login.html**
 
 > The API base URL is set in `frontend/js/api.js`:
-> `const API_BASE_URL = 'http://localhost:8080';` — update if your backend
-> runs elsewhere.
+
+> `const API_BASE_URL = 'https://trishul-crm-backend.onrender.com';`
+
+For local development, you can change it back to:
+
+> `const API_BASE_URL = 'http://localhost:8080';`
 
 ### 5. Demo Accounts (seeded automatically)
 
