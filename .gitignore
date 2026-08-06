@@ -1,27 +1,40 @@
 # =========================
 # Java / Maven
 # =========================
-backend/target/
+target/
 *.class
-
-# =========================
-# Node.js
-# =========================
-frontend/node_modules/
-frontend/dist/
-frontend/build/
-
-# =========================
-# IDE Files
-# =========================
-.vscode/
-.idea/
-*.iml
+*.jar
+*.war
+*.ear
 
 # =========================
 # Logs
 # =========================
 *.log
+logs/
+
+# =========================
+# IDE Files
+# =========================
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# =========================
+# OS Files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Node.js
+# =========================
+node_modules/
+npm-debug.log*
+yarn-error.log*
 
 # =========================
 # Environment Files
@@ -30,7 +43,27 @@ frontend/build/
 .env.*
 
 # =========================
-# OS Files
+# Build Files
 # =========================
-Thumbs.db
-.DS_Store
+dist/
+build/
+out/
+
+# =========================
+# Temporary Files
+# =========================
+*.tmp
+*.temp
+*.swp
+
+# =========================
+# Database
+# =========================
+*.db
+*.sqlite
+
+# =========================
+# Secrets
+# =========================
+application-local.properties
+application-prod.properties

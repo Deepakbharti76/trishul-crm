@@ -41,6 +41,8 @@ function renderTable() {
         return;
     }
 
+    const canDelete = ['ADMIN', 'SUPERVISOR'].includes((Session.get() || {}).role);
+
     body.innerHTML = rows.map(t => `
         <tr>
             <td><strong>${Fmt.escape(t.title)}</strong>${t.description ? `<div class="cell-sub">${Fmt.escape(truncate(t.description, 60))}</div>` : ''}</td>
@@ -51,7 +53,7 @@ function renderTable() {
             <td>
                 <div class="row-actions">
                     <button onclick="editTask(${t.id})" title="Edit"><i class="fa-solid fa-pen"></i></button>
-                    <button class="del" onclick="deleteTask(${t.id})" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                    ${canDelete ? `<button class="del" onclick="deleteTask(${t.id})" title="Delete"><i class="fa-solid fa-trash"></i></button>` : ''}
                 </div>
             </td>
         </tr>
@@ -147,6 +149,10 @@ function editTask(id) {
 }
 
 async function deleteTask(id) {
+    if (!['ADMIN', 'SUPERVISOR'].includes((Session.get() || {}).role)) {
+        Toast.error('You do not have permission to delete tasks.');
+        return;
+    }
     if (!confirm('Delete this task? This action cannot be undone.')) return;
     try {
         await Api.del(`/tasks/${id}`);

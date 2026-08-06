@@ -5,6 +5,7 @@ import com.trishul.crm.security.AuthEntryPointJson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,6 +25,13 @@ import java.util.List;
  * Login style but driven through a JSON /login endpoint), Role Based Access
  * Control for ADMIN / SUPERVISOR / USER, and CORS enabled for the static
  * front-end which is served from a different origin.
+ *
+ * IMPORTANT: requestMatchers() must be called with the org.springframework
+ * .http.HttpMethod enum (HttpMethod.GET / HttpMethod.DELETE / etc.) to scope
+ * a rule to one HTTP method. Passing a raw String like "GET" as the first
+ * argument silently resolves to the path-pattern overload instead — Spring
+ * then treats "GET" as a literal (never-matching) URL pattern, and the rule
+ * ends up applying to EVERY HTTP method with no role restriction at all.
  */
 @Configuration
 @EnableWebSecurity
@@ -57,29 +65,29 @@ public class SecurityConfig {
                     .requestMatchers("/login", "/logout", "/error").permitAll()
 
                     // Everyone authenticated can READ
-                    .requestMatchers("GET", "/customers/**", "/leads/**", "/tasks/**",
+                    .requestMatchers(HttpMethod.GET, "/customers/**", "/leads/**", "/tasks/**",
                             "/employees/**", "/reports/**", "/settings/**", "/dashboard/**", "/me").authenticated()
 
-                    // Create / Update allowed to ADMIN & SUPERVISOR
-                    .requestMatchers("POST", "/customers/**", "/leads/**", "/tasks/**")
+                    // Create / Update on customers, leads, tasks allowed to ADMIN, SUPERVISOR & USER
+                    .requestMatchers(HttpMethod.POST, "/customers/**", "/leads/**", "/tasks/**")
                         .hasAnyRole("ADMIN", "SUPERVISOR", "USER")
-                    .requestMatchers("PUT", "/customers/**", "/leads/**", "/tasks/**")
+                    .requestMatchers(HttpMethod.PUT, "/customers/**", "/leads/**", "/tasks/**")
                         .hasAnyRole("ADMIN", "SUPERVISOR", "USER")
 
                     // Employees module restricted to ADMIN & SUPERVISOR
-                    .requestMatchers("POST", "/employees/**").hasAnyRole("ADMIN", "SUPERVISOR")
-                    .requestMatchers("PUT", "/employees/**").hasAnyRole("ADMIN", "SUPERVISOR")
-                    .requestMatchers("DELETE", "/employees/**").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.POST, "/employees/**").hasAnyRole("ADMIN", "SUPERVISOR")
+                    .requestMatchers(HttpMethod.PUT, "/employees/**").hasAnyRole("ADMIN", "SUPERVISOR")
+                    .requestMatchers(HttpMethod.DELETE, "/employees/**").hasRole("ADMIN")
 
-                    // Delete restricted to ADMIN & SUPERVISOR
-                    .requestMatchers("DELETE", "/customers/**", "/leads/**", "/tasks/**")
+                    // Delete on customers, leads, tasks restricted to ADMIN & SUPERVISOR only (NOT USER)
+                    .requestMatchers(HttpMethod.DELETE, "/customers/**", "/leads/**", "/tasks/**")
                         .hasAnyRole("ADMIN", "SUPERVISOR")
 
                     // Settings restricted to ADMIN
-                    .requestMatchers("PUT", "/settings/**").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.PUT, "/settings/**").hasRole("ADMIN")
 
-                    // Reports readable by all authenticated, generation by ADMIN/SUPERVISOR
-                    .requestMatchers("POST", "/reports/**").hasAnyRole("ADMIN", "SUPERVISOR")
+                    // Report generation restricted to ADMIN & SUPERVISOR
+                    .requestMatchers(HttpMethod.POST, "/reports/**").hasAnyRole("ADMIN", "SUPERVISOR")
 
                     .anyRequest().authenticated()
             )
@@ -101,3 +109,4 @@ public class SecurityConfig {
         return source;
     }
 }
+

@@ -3,6 +3,7 @@ package com.trishul.crm.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -20,9 +21,13 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Customer name is required")
-    @Column(nullable = false, length = 100)
-    private String name;
+   @NotBlank(message = "Customer name is required")
+@Pattern(
+    regexp = "^[A-Za-z][A-Za-z .'-]*$",
+    message = "Name must contain only letters"
+)
+@Column(nullable = false, length = 100)
+private String name;
 
     @Email(message = "Email must be valid")
     @Column(length = 100)
