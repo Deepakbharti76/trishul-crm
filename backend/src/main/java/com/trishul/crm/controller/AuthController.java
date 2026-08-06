@@ -74,3 +74,4 @@ public class AuthController {
 public ResponseEntity<String> me() {
     return ResponseEntity.ok("WORKING");
 }
+}
