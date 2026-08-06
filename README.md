@@ -1,17 +1,91 @@
-# Trishul CRM — Smart Business Management
+<div align="center">
 
-A full-stack Customer Relationship Management system with a premium dark UI,
-cinematic login animation, and role-based access control.
+# 🛡️ Trishul CRM — Smart Business Management
 
-**Backend:** Java 21 · Spring Boot 3 · Spring MVC · Spring Data JPA ·
-Spring Security (session-based, role-based) · MySQL · Maven
+A full-stack Customer Relationship Management system with a premium dark
+UI, cinematic trident opening animation, live analytics dashboard, and
+role-based access control for Admin, Supervisor, and User roles.
 
-**Frontend:** HTML5 · CSS3 (vanilla, no framework) · Vanilla JavaScript ·
-Chart.js · Font Awesome — consumes the backend purely over the Fetch API.
+[![Java](https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk&logoColor=white)](https://openjdk.org/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3-6DB33F?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-Vanilla-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![Chart.js](https://img.shields.io/badge/Chart.js-FF6384?logo=chartdotjs&logoColor=white)](https://www.chartjs.org/)
+[![License](https://img.shields.io/badge/License-MIT-lightgrey)](#-license)
+
+[Features](#-features) • [Screenshots](#-screenshots) • [Tech Stack](#-tech-stack) • [Getting Started](#-getting-started) • [RBAC](#-role-based-access-control) • [API Docs](#-api-documentation)
+
+</div>
 
 ---
 
-## 1. Project Structure
+## ✨ Features
+
+- 🔐 **Secure session-based authentication** with BCrypt password hashing
+- 🎭 **Role-Based Access Control** — Admin / Supervisor / User, enforced on both frontend and backend
+- 📊 **Live analytics dashboard** — revenue trend, lead pipeline, task status, recent activity
+- 👥 **Full CRUD** for Customers, Leads, Tasks, and Employees
+- 📈 **Reports module** with an auto-calculated conversion funnel
+- 🤖 **AI Assistant** that answers natural-language questions using your live CRM data
+- ⚙️ **Company settings** panel (Admin-only edits)
+- 🎬 **Cinematic SVG opening animation** on the login screen — pure CSS/SVG, no animation library
+- 📱 **Fully responsive** — desktop, tablet, and mobile
+- 🌙 **Premium dark UI** with a brass-gold / teal design system
+
+---
+
+## 🛠 Tech Stack
+
+**Backend**
+
+- ☕ Java 21
+- 🍃 Spring Boot 3 · Spring MVC
+- 🗄 Spring Data JPA (Hibernate)
+- 🔐 Spring Security (session-based, role-based)
+- 🐬 MySQL
+- 📦 Maven
+
+**Frontend**
+
+- 🌐 HTML5
+- 🎨 CSS3 (vanilla, no framework)
+- 🟨 JavaScript (vanilla, Fetch API)
+- 📊 Chart.js
+- 🔤 Font Awesome
+
+---
+
+## 📸 Screenshots
+
+### 🔐 Login Page
+
+![Login Page](docs/images/Login%20Page.png)
+
+### 📊 Dashboard
+
+![Dashboard](docs/images/Dashboard.png)
+
+### 📈 Reports
+
+![Reports](docs/images/Reports.png)
+
+### 🤖 AI Assistant
+
+![AI Assistant](docs/images/AI%20Assistant.png)
+
+### ⚙️ Settings
+
+![Settings](docs/images/Settings.png)
+
+---
+
+## 🌐 Live Demo
+
+> Not deployed yet — currently runs locally. See [Getting Started](#-getting-started) below.
+
+---
+
+## 📁 Project Structure
 
 ```
 trishul-crm/
@@ -55,32 +129,26 @@ trishul-crm/
 
 ---
 
-## 2. Prerequisites
+## 🚀 Getting Started
+
+### Prerequisites
 
 - Java 21 (JDK)
 - Maven 3.8+
 - MySQL 8.0+
-- Any static file server for the frontend (or just open the HTML files
-  directly — see note below)
+- Any static file server for the frontend (or open the HTML files directly)
 
----
-
-## 3. Backend Setup
-
-### 3.1 Create the database
-
-You have two options:
+### 1. Database Setup
 
 **Option A — Let Hibernate create everything (recommended for first run)**
 
-1. Create an empty schema:
-   ```sql
-   CREATE DATABASE trishul_crm CHARACTER SET utf8mb4;
-   ```
-2. Start the backend (see below). `spring.jpa.hibernate.ddl-auto=update` will
-   create all tables automatically, and `DataSeeder.java` will insert roles,
-   3 demo users, and sample customers/leads/tasks/employees/reports/settings
-   on first boot.
+```sql
+CREATE DATABASE trishul_crm CHARACTER SET utf8mb4;
+```
+
+Start the backend (below). `spring.jpa.hibernate.ddl-auto=update` creates all
+tables automatically, and `DataSeeder.java` inserts roles, 3 demo users, and
+sample customers/leads/tasks/employees/reports/settings on first boot.
 
 **Option B — Import the ready-made SQL file**
 
@@ -88,12 +156,7 @@ You have two options:
 mysql -u root -p < database/trishul_crm.sql
 ```
 
-This creates the schema and inserts the same sample data directly. If you
-use this path, either let `DataSeeder` skip re-seeding (it only inserts when
-a table is empty, so it's safe either way) or set
-`spring.jpa.hibernate.ddl-auto=validate` once the schema exists.
-
-### 3.2 Configure credentials
+### 2. Configure Credentials
 
 Edit `backend/src/main/resources/application.properties`:
 
@@ -103,16 +166,31 @@ spring.datasource.username=YOUR_MYSQL_USERNAME
 spring.datasource.password=YOUR_MYSQL_PASSWORD
 ```
 
-### 3.3 Run the backend
+> ⚠️ Never commit your real database password. See [What Not to Commit](#-what-not-to-commit) below.
+
+### 3. Run the Backend
 
 ```bash
 cd backend
 mvn spring-boot:run
 ```
 
-The API will start on **http://localhost:8080**.
+API starts on **http://localhost:8080**
 
-### 3.4 Demo accounts (seeded automatically)
+### 4. Run the Frontend
+
+```bash
+cd frontend
+npx serve .
+```
+
+Open **http://localhost:5500/login.html**
+
+> The API base URL is set in `frontend/js/api.js`:
+> `const API_BASE_URL = 'http://localhost:8080';` — update if your backend
+> runs elsewhere.
+
+### 5. Demo Accounts (seeded automatically)
 
 | Username   | Password  | Role       |
 | ---------- | --------- | ---------- |
@@ -122,46 +200,23 @@ The API will start on **http://localhost:8080**.
 
 ---
 
-## 4. Frontend Setup
+## 🧩 Modules
 
-The frontend is plain static HTML/CSS/JS — no build step required.
-
-**Option A — VS Code Live Server / any static server**
-
-```bash
-cd frontend
-npx serve .
-
-```
-
-Then open `http://localhost:5500/login.html`.
-
-**Option B — Open directly in the browser**
-You can open `frontend/login.html` directly via `file://`. Since the backend
-enables CORS with credentials for all origins, this also works, though a
-local static server is recommended for consistent cookie behavior.
-
-> The API base URL is configured in `frontend/js/api.js` as
-> `const API_BASE_URL = 'http://localhost:8080';` — change this if your
-> backend runs elsewhere.
+| #   | Module           | Description                                                       |
+| --- | ---------------- | ----------------------------------------------------------------- |
+| 1   | **Login**        | Cinematic trident opening animation, session-based auth           |
+| 2   | **Dashboard**    | Stat cards, revenue/leads/tasks charts, recent activity           |
+| 3   | **Customers**    | Full CRUD, search & status filter                                 |
+| 4   | **Leads**        | Full CRUD, pipeline stages, search & filter                       |
+| 5   | **Tasks**        | Full CRUD, priority & status, due dates                           |
+| 6   | **Employees**    | Full CRUD (create/update: Admin & Supervisor, delete: Admin only) |
+| 7   | **Reports**      | Summary stats, conversion funnel, generate & list reports         |
+| 8   | **AI Assistant** | Chat UI that answers questions using live CRM data                |
+| 9   | **Settings**     | Company profile, notification preferences, account info           |
 
 ---
 
-## 5. Modules
-
-1. **Login** — cinematic trident opening animation, session-based auth
-2. **Dashboard** — stat cards, revenue/leads/tasks charts, recent activity
-3. **Customers** — full CRUD, search & status filter
-4. **Leads** — full CRUD, pipeline stages, search & filter
-5. **Tasks** — full CRUD, priority & status, due dates
-6. **Employees** — full CRUD (create/update: Admin & Supervisor, delete: Admin only)
-7. **Reports** — summary stats, conversion funnel, generate & list reports
-8. **AI Assistant** — chat UI that answers questions using live CRM data
-9. **Settings** — company profile, notification preferences, account info
-
----
-
-## 6. Role-Based Access Control
+## 🔒 Role-Based Access Control
 
 | Action                                | ADMIN | SUPERVISOR | USER |
 | ------------------------------------- | :---: | :--------: | :--: |
@@ -173,38 +228,66 @@ local static server is recommended for consistent cookie behavior.
 | Generate reports                      |  ✅   |     ✅     |  ❌  |
 | Edit company settings                 |  ✅   |     ❌     |  ❌  |
 
-Enforced on both the backend (`SecurityConfig.java`) and reflected in the
-frontend UI (`layout.js` hides/disables actions the current role can't use).
+Enforced on both the **backend** (`SecurityConfig.java` — the real security
+layer) and reflected in the **frontend UI** (`layout.js` hides/disables
+actions and redirects away from restricted pages, for UX only).
 
 ---
 
-## 7. Notes
+## 📚 API Documentation
 
-- Sessions are stored server-side (`JSESSIONID` cookie); the frontend never
-  handles a token directly.
-- Passwords are hashed with BCrypt.
+Full REST endpoint reference, request/response shapes, and status codes are
+in [`docs/API_DOCUMENTATION.md`](docs/API_DOCUMENTATION.md).
+
+---
+
+## 🔐 Security Notes
+
+- Sessions are stored server-side (`JSESSIONID` cookie) — the frontend never
+  handles a token directly
+- Passwords are hashed with **BCrypt**
 - All list/CRUD endpoints validate input with Jakarta Bean Validation and
-  return field-level error messages on `400`.
-- See `docs/API_DOCUMENTATION.md` for the full REST reference.
+  return field-level error messages on `400`
+- Role checks are enforced at the API layer, not just in the UI
 
-## 8. 📸 Screenshots
+---
 
-### 🔐 Login Page
+## 🚫 What Not to Commit
 
-![Login Page](docs/images/Login%20Page.png)
+This repo's `.gitignore` excludes:
 
-### 📊 Dashboard
+```
+backend/target/       # Maven build output — regenerated by `mvn clean install`
+.idea/ *.iml           # IDE metadata
+.vscode/
+.DS_Store, Thumbs.db   # OS files
+*.log
+*.class
+```
 
-![Dashboard](docs/images/Dashboard.png)
+Also avoid committing real production database credentials in
+`application.properties` — the demo credentials in this repo are fine for
+local development only.
 
-### 📈 Reports
+---
 
-![Reports](docs/images/Reports.png)
+## 🗺️ Roadmap
 
-### 🤖 AI Assistant
+- [ ] Pagination on list endpoints
+- [ ] Export to PDF / Excel
+- [ ] Automated tests (JUnit + Mockito, MockMvc)
+- [ ] Deploy backend (Render/Railway) + frontend (Netlify/Vercel)
 
-![AI Assistant](docs/images/AI%20Assistant.png)
+---
 
-### ⚙️ Settings
+## 📄 License
 
-![Settings](docs/images/Settings.png)
+This project is licensed under the MIT License.
+
+---
+
+<div align="center">
+
+Built with ☕ Java, 🍃 Spring Boot, and a lot of dark-mode design.
+
+</div>
