@@ -71,22 +71,34 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<ApiResponse<LoginResponse>> me() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !auth.isAuthenticated()) {
-            return ResponseEntity.status(401).body(ApiResponse.error("Not authenticated"));
-        }
-        User user = userRepository.findByUsername(auth.getName())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+public ResponseEntity<ApiResponse> me() {
 
-        LoginResponse response = new LoginResponse(
-                user.getId(),
-                user.getUsername(),
-                user.getFullName(),
-                user.getEmail(),
-                user.getRole().getName().replace("ROLE_", ""),
-                null
-        );
-        return ResponseEntity.ok(ApiResponse.success("OK", response));
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+    if (auth == null
+            || !auth.isAuthenticated()
+            || "anonymousUser".equals(auth.getName())) {
+
+        return ResponseEntity.status(401)
+                .body(ApiResponse.error("Not authenticated"));
     }
+
+    User user = userRepository.findByUsername(auth.getName())
+            .orElse(null);
+
+    if (user == null) {
+        return ResponseEntity.status(401)
+                .body(ApiResponse.error("User not found"));
+    }
+
+    LoginResponse response = new LoginResponse(
+            user.getId(),
+            user.getUsername(),
+            user.getFullName(),
+            user.getEmail(),
+            user.getRole().getName().replace("ROLE_", ""),
+            null
+    );
+
+    return ResponseEntity.ok(ApiResponse.success("OK", response));
 }
