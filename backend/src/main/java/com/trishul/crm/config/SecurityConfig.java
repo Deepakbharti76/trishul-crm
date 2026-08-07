@@ -107,9 +107,9 @@ public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
 
     // Allow all Vercel deployments
-    configuration.setAllowedOriginPatterns(List.of(
-            "https://*.vercel.app"
-    ));
+   configuration.setAllowedOriginPatterns(List.of(
+    "https://*.vercel.app"
+));
 
     configuration.setAllowedMethods(List.of(
             "GET",
