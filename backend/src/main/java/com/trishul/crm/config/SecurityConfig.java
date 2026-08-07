@@ -103,22 +103,33 @@ public class SecurityConfig {
 
    @Bean
 public CorsConfigurationSource corsConfigurationSource() {
+
     CorsConfiguration configuration = new CorsConfiguration();
 
-    configuration.setAllowedOrigins(List.of(
-        "https://trishul-crm-git-main-deepakbharti76s-projects.vercel.app"
+    // Allow all Vercel deployments
+    configuration.setAllowedOriginPatterns(List.of(
+            "https://*.vercel.app"
     ));
 
     configuration.setAllowedMethods(List.of(
-        "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"
+            "GET",
+            "POST",
+            "PUT",
+            "DELETE",
+            "OPTIONS",
+            "PATCH"
     ));
 
     configuration.setAllowedHeaders(List.of("*"));
+
+    configuration.setExposedHeaders(List.of("*"));
+
     configuration.setAllowCredentials(true);
+
+    configuration.setMaxAge(3600L);
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
 
     return source;
-}
 }
