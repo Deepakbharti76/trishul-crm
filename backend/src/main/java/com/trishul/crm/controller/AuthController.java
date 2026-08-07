@@ -71,7 +71,27 @@ public class AuthController {
     }
 
    @GetMapping("/me")
-public ResponseEntity<String> me() {
-    return ResponseEntity.ok("WORKING");
+public ResponseEntity<ApiResponse<LoginResponse>> me() {
+
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+    if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getName())) {
+        return ResponseEntity.status(401)
+                .body(ApiResponse.error("Authentication required. Please login."));
+    }
+
+    User user = userRepository.findByUsername(auth.getName())
+            .orElseThrow(() -> new RuntimeException("User not found"));
+
+    LoginResponse response = new LoginResponse(
+            user.getId(),
+            user.getUsername(),
+            user.getFullName(),
+            user.getEmail(),
+            user.getRole().getName().replace("ROLE_", ""),
+            null
+    );
+
+    return ResponseEntity.ok(ApiResponse.success("OK", response));
 }
 }
