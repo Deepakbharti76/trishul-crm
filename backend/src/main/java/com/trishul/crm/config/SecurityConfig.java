@@ -60,9 +60,13 @@ public class SecurityConfig {
             .exceptionHandling(ex -> ex
                     .authenticationEntryPoint(authEntryPointJson)
                     .accessDeniedHandler(accessDeniedHandlerJson))
-            .authorizeHttpRequests(auth -> auth
-                    // Public endpoints
-                    .requestMatchers("/login", "/logout", "/error").permitAll()
+        .authorizeHttpRequests(auth -> auth
+
+    // Allow CORS preflight requests
+    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+    // Public endpoints
+    .requestMatchers("/login", "/logout", "/error").permitAll()
 
                     // Everyone authenticated can READ
                     .requestMatchers(HttpMethod.GET, "/customers/**", "/leads/**", "/tasks/**",
@@ -97,12 +101,12 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
+   @Bean
 public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
 
     configuration.setAllowedOrigins(List.of(
-        "https://trishul-o9tmbrnwx-deepakbharti76s-projects.vercel.app"
+        "https://trishul-crm-git-main-deepakbharti76s-projects.vercel.app"
     ));
 
     configuration.setAllowedMethods(List.of(
