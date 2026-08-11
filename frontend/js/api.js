@@ -4,7 +4,9 @@
    Uses session cookies (credentials: 'include') for authentication.
    ========================================================================= */
 
-const API_BASE_URL = "https://trishul-crm-backend.onrender.com";
+// const API_BASE_URL = "https://trishul-crm-backend.onrender.com";
+
+const API_BASE_URL = "/api";
 
 const Api = {
   async request(path, { method = "GET", body = null, headers = {} } = {}) {
@@ -37,20 +39,12 @@ const Api = {
     }
 
     if (response.status === 401) {
-      if (
-        !window.location.pathname.endsWith("login.html") &&
-        !window.location.pathname.endsWith("index.html") &&
-        window.location.pathname !== "/"
-      ) {
-        window.location.href = "login.html";
-      }
       throw new ApiError(
         payload?.message || "Session expired. Please log in again.",
         401,
         payload,
       );
     }
-
     if (!response.ok) {
       throw new ApiError(
         payload?.message || `Request failed (${response.status})`,
