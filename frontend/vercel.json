@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://trishul-crm-backend.onrender.com/:path*"
+    }
+  ]
+}

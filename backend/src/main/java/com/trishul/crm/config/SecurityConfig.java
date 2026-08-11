@@ -108,7 +108,9 @@ public CorsConfigurationSource corsConfigurationSource() {
 
     // Allow all Vercel deployments
    configuration.setAllowedOriginPatterns(List.of(
-    "https://*.vercel.app"
+    "https://trishul-crm-six.vercel.app",
+    "https://*.vercel.app",
+    "http://localhost:*"
 ));
 
     configuration.setAllowedMethods(List.of(
