@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Assistant · Trishul CRM</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+    .ai-shell { display: grid; grid-template-columns: 1fr 300px; gap: 18px; height: calc(100vh - var(--topbar-h) - 56px); }
+    .chat-panel { display: flex; flex-direction: column; border-radius: var(--radius-lg); border: 1px solid var(--border-soft); background: linear-gradient(165deg, var(--bg-panel) 0%, var(--bg-base) 140%); overflow: hidden; }
+    .chat-header { display: flex; align-items: center; gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--border-soft); }
+    .ai-orb { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(155deg, var(--gold-300), var(--teal-500)); display: flex; align-items: center; justify-content: center; color: #06231f; box-shadow: 0 0 20px var(--gold-glow); flex-shrink: 0; }
+    .chat-header strong { font-size: 14.5px; display: block; }
+    .chat-header span { font-size: 11.5px; color: var(--success); display: flex; align-items: center; gap: 5px; }
+    .chat-header span::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--success); }
+
+    .chat-messages { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 18px; }
+    .msg { display: flex; gap: 12px; max-width: 78%; }
+    .msg.user { align-self: flex-end; flex-direction: row-reverse; }
+    .msg-avatar { width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+    .msg.ai .msg-avatar { background: rgba(201,151,47,0.16); color: var(--gold-300); }
+    .msg.user .msg-avatar { background: rgba(34,184,164,0.16); color: var(--teal-300); }
+    .msg-bubble { padding: 12px 15px; border-radius: 14px; font-size: 13.5px; line-height: 1.6; }
+    .msg.ai .msg-bubble { background: var(--bg-panel-2); border: 1px solid var(--border-hair); border-top-left-radius: 4px; }
+    .msg.user .msg-bubble { background: linear-gradient(155deg, var(--gold-300), var(--gold-600)); color: var(--text-on-gold); border-top-right-radius: 4px; font-weight: 500; }
+    .msg-bubble ul { margin: 8px 0 0 18px; }
+    .msg-bubble .metric { font-family: var(--font-mono); color: var(--gold-300); font-weight: 600; }
+    .msg.ai .msg-bubble .metric { color: var(--teal-300); }
+
+    .typing-dots { display: flex; gap: 4px; padding: 4px 0; }
+    .typing-dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--text-tertiary); animation: typingBounce 1.2s infinite ease-in-out; }
+    .typing-dots span:nth-child(2) { animation-delay: 0.15s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes typingBounce { 0%, 60%, 100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-4px); opacity: 1; } }
+
+    .chat-input-row { padding: 16px 20px; border-top: 1px solid var(--border-soft); display: flex; gap: 10px; }
+    .chat-input-row input { flex: 1; padding: 12px 16px; border-radius: var(--radius-full); background: var(--bg-panel-2); border: 1px solid var(--border-hair); color: var(--text-primary); font-size: 13.5px; }
+    .chat-input-row input:focus { outline: none; border-color: var(--gold-600); }
+    .chat-send { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(155deg, var(--gold-300), var(--gold-600)); color: var(--text-on-gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: none; }
+    .chat-send:hover { filter: brightness(1.08); }
+
+    .ai-side-panel { display: flex; flex-direction: column; gap: 14px; overflow-y: auto; }
+    .suggestion-btn { text-align: left; padding: 13px 14px; border-radius: var(--radius-md); background: var(--bg-panel-2); border: 1px solid var(--border-hair); font-size: 12.5px; color: var(--text-secondary); display: flex; align-items: center; gap: 10px; transition: all 0.15s; }
+    .suggestion-btn:hover { border-color: var(--gold-600); color: var(--text-primary); }
+    .suggestion-btn i { color: var(--gold-300); font-size: 13px; }
+
+    @media (max-width: 1000px) { .ai-shell { grid-template-columns: 1fr; height: auto; } }
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="trishul-mark">
+                <svg viewBox="0 0 120 160" width="22" height="22" fill="none"><path d="M60 152 L60 66 M36 72 L84 72 M60 66 L60 12 M40 72 C 28 56, 24 30, 34 8 M80 72 C 92 56, 96 30, 86 8" stroke="#1a1406" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="brand-text"><strong>Trishul CRM</strong><span>Business Deck</span></div>
+        </div>
+
+        <div class="nav-section-label">Overview</div>
+        <ul class="nav-list"><li class="nav-item"><a href="dashboard.html"><i class="fa-solid fa-gauge-high"></i> Dashboard</a></li></ul>
+
+        <div class="nav-section-label">CRM</div>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="customers.html"><i class="fa-solid fa-address-book"></i> Customers</a></li>
+            <li class="nav-item"><a href="leads.html"><i class="fa-solid fa-bullseye"></i> Leads</a></li>
+            <li class="nav-item"><a href="tasks.html"><i class="fa-solid fa-list-check"></i> Tasks</a></li>
+        </ul>
+
+        <div class="nav-section-label">Organization</div>
+        <ul class="nav-list"><li class="nav-item" data-nav="employees"><a href="employees.html"><i class="fa-solid fa-users"></i> Employees</a></li></ul>
+
+        <div class="nav-section-label">Insights</div>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="reports.html"><i class="fa-solid fa-chart-pie"></i> Reports</a></li>
+            <li class="nav-item"><a href="ai-assistant.html"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Assistant</a></li>
+        </ul>
+
+        <div class="nav-section-label">System</div>
+        <ul class="nav-list"><li class="nav-item"><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li></ul>
+
+        <div class="sidebar-footer">
+            <div class="user-chip">
+                <div class="avatar-ring" id="sidebarAvatar">--</div>
+                <div class="user-chip-info"><strong id="sidebarUserName">Loading…</strong><span id="sidebarUserRole">—</span></div>
+            </div>
+            <button class="logout-btn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+        </div>
+    </aside>
+
+    <div class="main-content">
+        <header class="topbar">
+            <div style="display:flex; align-items:center; gap:14px;">
+                <button class="icon-btn" id="menuToggle" style="display:none;"><i class="fa-solid fa-bars"></i></button>
+                <div class="page-heading"><h1>AI Assistant</h1><p>Ask questions about your customers, leads, tasks and revenue.</p></div>
+            </div>
+            <div class="topbar-actions"><button class="btn btn-secondary" id="clearChatBtn"><i class="fa-solid fa-broom"></i> Clear Chat</button></div>
+        </header>
+
+        <main class="content-area">
+            <div class="ai-shell fade-in">
+                <div class="chat-panel">
+                    <div class="chat-header">
+                        <div class="ai-orb"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                        <div>
+                            <strong>Trishul Assistant</strong>
+                            <span>Online · reading live CRM data</span>
+                        </div>
+                    </div>
+                    <div class="chat-messages" id="chatMessages"></div>
+                    <form class="chat-input-row" id="chatForm">
+                        <input type="text" id="chatInput" placeholder="Ask about revenue, leads, tasks, customers…" autocomplete="off">
+                        <button type="submit" class="chat-send"><i class="fa-solid fa-paper-plane"></i></button>
+                    </form>
+                </div>
+
+                <aside class="ai-side-panel">
+                    <div class="panel" style="padding:16px;">
+                        <div class="panel-header" style="margin-bottom:12px;"><div><h3 style="font-size:14px;">Try asking</h3></div></div>
+                        <div style="display:flex; flex-direction:column; gap:8px;">
+                            <button class="suggestion-btn" data-q="What is our total revenue?"><i class="fa-solid fa-sack-dollar"></i> What is our total revenue?</button>
+                            <button class="suggestion-btn" data-q="How many pending tasks do we have?"><i class="fa-solid fa-list-check"></i> How many pending tasks?</button>
+                            <button class="suggestion-btn" data-q="Show me the lead pipeline"><i class="fa-solid fa-bullseye"></i> Show me the lead pipeline</button>
+                            <button class="suggestion-btn" data-q="Who are our top customers?"><i class="fa-solid fa-address-book"></i> Who are our top customers?</button>
+                            <button class="suggestion-btn" data-q="How many employees do we have?"><i class="fa-solid fa-users"></i> Team headcount</button>
+                            <button class="suggestion-btn" data-q="What is our lead conversion rate?"><i class="fa-solid fa-chart-line"></i> Conversion rate</button>
+                        </div>
+                    </div>
+                    <div class="panel" style="padding:16px;">
+                        <div class="panel-header" style="margin-bottom:10px;"><div><h3 style="font-size:14px;">About this assistant</h3></div></div>
+                        <p style="font-size:12.5px; color:var(--text-tertiary); line-height:1.6;">
+                            Answers are generated from your live Customers, Leads, Tasks and Employees data via the Trishul CRM REST API — no data ever leaves your server.
+                        </p>
+                    </div>
+                </aside>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/ai-assistant.js"></script>
+</body>
+</html>
