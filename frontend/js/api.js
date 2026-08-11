@@ -4,9 +4,7 @@
    Uses session cookies (credentials: 'include') for authentication.
    ========================================================================= */
 
-// const API_BASE_URL = "https://trishul-crm-backend.onrender.com";
-
-const API_BASE_URL = "/api";
+const API_BASE_URL = "https://trishul-crm-backend.onrender.com";
 
 const Api = {
   async request(path, { method = "GET", body = null, headers = {} } = {}) {
