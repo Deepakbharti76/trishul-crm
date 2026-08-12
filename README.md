@@ -11,9 +11,13 @@ role-based access control for Admin, Supervisor, and User roles.
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-Vanilla-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Chart.js](https://img.shields.io/badge/Chart.js-FF6384?logo=chartdotjs&logoColor=white)](https://www.chartjs.org/)
+[![Deployed on Vercel](https://img.shields.io/badge/Frontend-Vercel-000000?logo=vercel&logoColor=white)](https://trishul-crm-six.vercel.app/)
+[![Deployed on Render](https://img.shields.io/badge/Backend-Render-46E3B7?logo=render&logoColor=white)](https://trishul-crm-backend.onrender.com/)
 [![License](https://img.shields.io/badge/License-MIT-lightgrey)](#-license)
 
-[Features](#-features) • [Screenshots](#-screenshots) • [Tech Stack](#-tech-stack) • [Getting Started](#-getting-started) • [RBAC](#-role-based-access-control) • [API Docs](#-api-documentation)
+### 🚀 [Live Demo](https://trishul-crm-six.vercel.app/) &nbsp;·&nbsp; 💻 [GitHub Repository](https://github.com/Deepakbharti76/trishul-crm)
+
+[Features](#-features) • [Screenshots](#-screenshots) • [Tech Stack](#-tech-stack) • [Getting Started](#-getting-started-local-development) • [RBAC](#-role-based-access-control) • [API Docs](#-api-documentation)
 
 </div>
 
@@ -42,7 +46,7 @@ role-based access control for Admin, Supervisor, and User roles.
 - 🍃 Spring Boot 3 · Spring MVC
 - 🗄 Spring Data JPA (Hibernate)
 - 🔐 Spring Security (session-based, role-based)
-- 🐬 MySQL
+- 🐬 MySQL (TiDB Cloud in production)
 - 📦 Maven
 
 **Frontend**
@@ -52,6 +56,12 @@ role-based access control for Admin, Supervisor, and User roles.
 - 🟨 JavaScript (vanilla, Fetch API)
 - 📊 Chart.js
 - 🔤 Font Awesome
+
+**Deployment**
+
+- ▲ Frontend hosted on **Vercel**
+- 🎨 Backend hosted on **Render**
+- 🗄 Database hosted on **TiDB Cloud**
 
 ---
 
@@ -81,7 +91,20 @@ role-based access control for Admin, Supervisor, and User roles.
 
 ## 🌐 Live Demo
 
-> Not deployed yet — currently runs locally. See [Getting Started](#-getting-started) below.
+**Frontend:** [https://trishul-crm-six.vercel.app/](https://trishul-crm-six.vercel.app/)
+**Backend API:** [https://trishul-crm-backend.onrender.com/](https://trishul-crm-backend.onrender.com/)
+
+> ⏳ The backend is hosted on Render's free tier, which spins down after
+> inactivity. The **first** login after a period of inactivity may take
+> 30–60 seconds to wake up — subsequent requests are fast.
+
+### Try it out — demo accounts
+
+| Username   | Password  | Role       |
+|------------|-----------|------------|
+| admin      | Admin@123 | ADMIN      |
+| supervisor | Super@123 | SUPERVISOR |
+| user       | User@123  | USER       |
 
 ---
 
@@ -105,7 +128,7 @@ trishul-crm/
 │       └── resources/
 │           └── application.properties
 │
-├── frontend/                    Static HTML/CSS/JS (served by any static host)
+├── frontend/                    Static HTML/CSS/JS, deployed on Vercel
 │   ├── index.html               Session router (→ dashboard or login)
 │   ├── login.html               Cinematic opening + sign-in form
 │   ├── dashboard.html           Stats, charts, recent activity
@@ -116,6 +139,8 @@ trishul-crm/
 │   ├── reports.html             Reports + funnel chart
 │   ├── ai-assistant.html        AI Assistant chat UI
 │   ├── settings.html            Company settings & account info
+│   ├── vercel.json              Proxies /api/* to the Render backend
+│   │                            (keeps the session cookie first-party)
 │   ├── css/style.css            Design system
 │   ├── css/animations.css       Cinematic opening + motion utilities
 │   └── js/                      api.js, auth.js, layout.js + one file per module
@@ -129,7 +154,7 @@ trishul-crm/
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Getting Started (Local Development)
 
 ### Prerequisites
 
@@ -158,7 +183,8 @@ mysql -u root -p < database/trishul_crm.sql
 
 ### 2. Configure Credentials
 
-Edit `backend/src/main/resources/application.properties`:
+Edit `backend/src/main/resources/application.properties`, or set these as
+environment variables (used automatically in production on Render):
 
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/trishul_crm?useSSL=false&serverTimezone=UTC
@@ -186,12 +212,11 @@ npx serve .
 
 Open **http://localhost:5500/login.html**
 
-> The API base URL is set in `frontend/js/api.js`:
-
-> `const API_BASE_URL = 'https://trishul-crm-backend.onrender.com';`
-
-For local development, you can change it back to:
-
+> The API base URL is set in `frontend/js/api.js`. In production it's a
+> relative path (`/api`) proxied by `vercel.json` to the Render backend —
+> this keeps the session cookie first-party so login works in Incognito
+> and on every browser/device. For local development without the Vercel
+> proxy, point it directly at your local backend instead:
 > `const API_BASE_URL = 'http://localhost:8080';`
 
 ### 5. Demo Accounts (seeded automatically)
@@ -207,7 +232,7 @@ For local development, you can change it back to:
 ## 🧩 Modules
 
 | #   | Module           | Description                                                       |
-| --- | ---------------- | ----------------------------------------------------------------- |
+| --- | ---------------- | ------------------------------------------------------------------- |
 | 1   | **Login**        | Cinematic trident opening animation, session-based auth           |
 | 2   | **Dashboard**    | Stat cards, revenue/leads/tasks charts, recent activity           |
 | 3   | **Customers**    | Full CRUD, search & status filter                                 |
@@ -223,7 +248,7 @@ For local development, you can change it back to:
 ## 🔒 Role-Based Access Control
 
 | Action                                | ADMIN | SUPERVISOR | USER |
-| ------------------------------------- | :---: | :--------: | :--: |
+| -------------------------------------- | :---: | :--------: | :--: |
 | View all modules                      |  ✅   |     ✅     |  ✅  |
 | Create/Update customers, leads, tasks |  ✅   |     ✅     |  ✅  |
 | Delete customers, leads, tasks        |  ✅   |     ✅     |  ❌  |
@@ -250,6 +275,9 @@ in [`docs/API_DOCUMENTATION.md`](docs/API_DOCUMENTATION.md).
 - Sessions are stored server-side (`JSESSIONID` cookie) — the frontend never
   handles a token directly
 - Passwords are hashed with **BCrypt**
+- Session cookie is `HttpOnly`, `Secure`, `SameSite=None`, and served
+  first-party in production via a Vercel rewrite proxy (`vercel.json`) so
+  it works reliably across all browsers, including Incognito and Safari
 - All list/CRUD endpoints validate input with Jakarta Bean Validation and
   return field-level error messages on `400`
 - Role checks are enforced at the API layer, not just in the UI
@@ -271,7 +299,8 @@ backend/target/       # Maven build output — regenerated by `mvn clean install
 
 Also avoid committing real production database credentials in
 `application.properties` — the demo credentials in this repo are fine for
-local development only.
+local development only. Production credentials are set as environment
+variables on Render.
 
 ---
 
@@ -280,12 +309,14 @@ local development only.
 - [ ] Pagination on list endpoints
 - [ ] Export to PDF / Excel
 - [ ] Automated tests (JUnit + Mockito, MockMvc)
-- [ ] Deploy backend (Render/Railway) + frontend (Netlify/Vercel)
+- [x] Deploy backend (Render) + frontend (Vercel) + database (TiDB Cloud)
 
 ---
 
 <div align="center">
 
 Built with ☕ Java, 🍃 Spring Boot, and a lot of dark-mode design.
+
+**[🚀 Live Demo](https://trishul-crm-six.vercel.app/)** &nbsp;·&nbsp; **[💻 GitHub](https://github.com/Deepakbharti76/trishul-crm)**
 
 </div>
