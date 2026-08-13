@@ -5,159 +5,332 @@
 
 /* ---------- Cinematic opening (login.html) ---------- */
 .cinematic-stage {
-    position: fixed;
-    inset: 0;
-    background: var(--bg-void);
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+  position: fixed;
+  inset: 0;
+  background: var(--bg-void);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .cinematic-stage.hide {
-    animation: stageFade 0.9s var(--ease-in-out) forwards;
-    pointer-events: none;
+  animation: stageFade 0.7s var(--ease-in-out) forwards;
+  pointer-events: none;
 }
 @keyframes stageFade {
-    to { opacity: 0; visibility: hidden; }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
 
 .cinematic-rays {
-    position: absolute;
-    inset: -20%;
-    background:
-        conic-gradient(from 90deg at 50% 50%,
-            transparent 0deg, rgba(201,151,47,0.06) 8deg, transparent 16deg,
-            transparent 40deg, rgba(34,184,164,0.05) 48deg, transparent 56deg,
-            transparent 90deg, rgba(201,151,47,0.05) 98deg, transparent 106deg,
-            transparent 180deg, rgba(201,151,47,0.06) 188deg, transparent 196deg,
-            transparent 260deg, rgba(34,184,164,0.05) 268deg, transparent 276deg);
-    animation: raysSpin 30s linear infinite;
-    opacity: 0;
-    animation: raysSpin 30s linear infinite, raysFadeIn 2s ease-out forwards;
+  position: absolute;
+  inset: -20%;
+  background: conic-gradient(
+    from 90deg at 50% 50%,
+    transparent 0deg,
+    rgba(201, 151, 47, 0.06) 8deg,
+    transparent 16deg,
+    transparent 40deg,
+    rgba(34, 184, 164, 0.05) 48deg,
+    transparent 56deg,
+    transparent 90deg,
+    rgba(201, 151, 47, 0.05) 98deg,
+    transparent 106deg,
+    transparent 180deg,
+    rgba(201, 151, 47, 0.06) 188deg,
+    transparent 196deg,
+    transparent 260deg,
+    rgba(34, 184, 164, 0.05) 268deg,
+    transparent 276deg
+  );
+  opacity: 0;
+  animation:
+    raysSpin 24s linear infinite,
+    raysFadeIn 1.2s ease-out forwards;
 }
-@keyframes raysSpin { to { transform: rotate(360deg); } }
-@keyframes raysFadeIn { to { opacity: 1; } }
+@keyframes raysSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes raysFadeIn {
+  to {
+    opacity: 1;
+  }
+}
 
-.cinematic-core { position: relative; display: flex; flex-direction: column; align-items: center; z-index: 2; }
+/* Faint vignette so the logo/text pop a little more against the rays */
+.cinematic-core::before {
+  content: "";
+  position: absolute;
+  inset: -60px;
+  background: radial-gradient(
+    circle,
+    rgba(6, 7, 10, 0) 0%,
+    rgba(6, 7, 10, 0.55) 72%
+  );
+  z-index: -1;
+  border-radius: 50%;
+}
+
+.cinematic-core {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
 
 .cinematic-trident {
-    width: 130px;
-    height: 170px;
-    opacity: 0;
-    transform: scale(0.7) translateY(10px);
+  width: 118px;
+  height: 154px;
+  opacity: 0;
+  transform: scale(0.72) translateY(14px);
 }
 
+/* Reveal (draw + rise), then settle into a slow, subtle breathing glow —
+   two independently-timed animations on the same element: the first runs
+   once and hands off cleanly to the second (matching end/loop values so
+   there's no visible jump between them). */
 .cinematic-trident.play {
-    animation: tridentRise 1.4s var(--ease-out) forwards;
+  animation:
+    tridentRise 0.95s var(--ease-out) forwards,
+    tridentPulse 2.1s ease-in-out 0.95s infinite;
 }
 @keyframes tridentRise {
-    0% { opacity: 0; transform: scale(0.6) translateY(20px); filter: drop-shadow(0 0 0 transparent); }
-    60% { opacity: 1; }
-    100% { opacity: 1; transform: scale(1) translateY(0); filter: drop-shadow(0 0 26px var(--gold-glow)); }
+  0% {
+    opacity: 0;
+    transform: scale(0.68) translateY(16px);
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  55% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: drop-shadow(0 0 22px var(--gold-glow));
+  }
+}
+@keyframes tridentPulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 22px var(--gold-glow));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 34px var(--gold-glow));
+    transform: scale(1.035);
+  }
 }
 
 .trident-path {
-    stroke: url(#tridentGradient);
-    stroke-width: 3.2;
-    fill: none;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-dasharray: 900;
-    stroke-dashoffset: 900;
+  stroke: url(#tridentGradient);
+  stroke-width: 3.2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 900;
+  stroke-dashoffset: 900;
 }
 .cinematic-trident.play .trident-path {
-    animation: drawTrident 1.6s var(--ease-out) forwards;
+  animation: drawTrident 0.95s var(--ease-out) forwards;
 }
 @keyframes drawTrident {
-    to { stroke-dashoffset: 0; }
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 .cinematic-wordmark {
-    margin-top: 28px;
-    font-family: var(--font-display);
-    font-size: 26px;
-    letter-spacing: 0.06em;
-    font-weight: 700;
-    opacity: 0;
-    background: linear-gradient(120deg, var(--gold-100), var(--gold-500));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+  margin-top: 26px;
+  font-family: var(--font-display);
+  font-size: 26px;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  opacity: 0;
+  background: linear-gradient(120deg, var(--gold-100), var(--gold-500));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
-.cinematic-wordmark.play { animation: wordFadeUp 0.9s var(--ease-out) 1.3s forwards; }
-@keyframes wordFadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.cinematic-wordmark.play {
+  animation: wordFadeUp 0.7s var(--ease-out) 0.7s forwards;
+}
+@keyframes wordFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 .cinematic-tagline {
-    margin-top: 8px;
-    font-size: 12.5px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--text-tertiary);
-    opacity: 0;
+  margin-top: 8px;
+  font-size: 12.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  opacity: 0;
 }
-.cinematic-tagline.play { animation: wordFadeUp 0.9s var(--ease-out) 1.6s forwards; }
+.cinematic-tagline.play {
+  animation: wordFadeUp 0.7s var(--ease-out) 0.95s forwards;
+}
 
 .cinematic-progress {
-    margin-top: 34px;
-    width: 200px;
-    height: 2px;
-    background: var(--border-hair);
-    border-radius: var(--radius-full);
-    overflow: hidden;
-    opacity: 0;
+  margin-top: 30px;
+  width: 180px;
+  height: 3px;
+  background: var(--border-hair);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  opacity: 0;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
 }
-.cinematic-progress.play { animation: wordFadeUp 0.6s var(--ease-out) 1.8s forwards; }
+.cinematic-progress.play {
+  animation: wordFadeUp 0.4s var(--ease-out) 1.2s forwards;
+}
 .cinematic-progress-fill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, var(--gold-500), var(--teal-300));
-    border-radius: var(--radius-full);
+  height: 100%;
+  width: 0%;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, var(--gold-500), var(--teal-300));
+  box-shadow: 0 0 10px var(--gold-glow);
 }
-.cinematic-progress.play .cinematic-progress-fill { animation: fillBar 1.4s var(--ease-in-out) 1.9s forwards; }
-@keyframes fillBar { to { width: 100%; } }
+.cinematic-progress.play .cinematic-progress-fill {
+  animation: fillBar 1.3s var(--ease-in-out) 1.3s forwards;
+}
+@keyframes fillBar {
+  to {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .cinematic-trident {
+    width: 92px;
+    height: 122px;
+  }
+  .cinematic-wordmark {
+    font-size: 21px;
+  }
+  .cinematic-tagline {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+  }
+  .cinematic-progress {
+    width: 140px;
+  }
+}
 
 /* ---------- Auth page reveal ---------- */
 .auth-shell {
-    opacity: 0;
-    transform: translateY(14px);
+  opacity: 0;
+  transform: translateY(14px);
 }
 .auth-shell.reveal {
-    animation: authReveal 0.7s var(--ease-out) forwards;
+  animation: authReveal 0.7s var(--ease-out) forwards;
 }
-@keyframes authReveal { to { opacity: 1; transform: translateY(0); } }
+@keyframes authReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 /* ---------- General page-load fade ---------- */
-.fade-in { animation: fadeIn 0.5s var(--ease-out) both; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in {
+  animation: fadeIn 0.5s var(--ease-out) both;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-.stagger > * { animation: fadeIn 0.5s var(--ease-out) both; }
-.stagger > *:nth-child(1) { animation-delay: 0.03s; }
-.stagger > *:nth-child(2) { animation-delay: 0.08s; }
-.stagger > *:nth-child(3) { animation-delay: 0.13s; }
-.stagger > *:nth-child(4) { animation-delay: 0.18s; }
-.stagger > *:nth-child(5) { animation-delay: 0.23s; }
-.stagger > *:nth-child(6) { animation-delay: 0.28s; }
+.stagger > * {
+  animation: fadeIn 0.5s var(--ease-out) both;
+}
+.stagger > *:nth-child(1) {
+  animation-delay: 0.03s;
+}
+.stagger > *:nth-child(2) {
+  animation-delay: 0.08s;
+}
+.stagger > *:nth-child(3) {
+  animation-delay: 0.13s;
+}
+.stagger > *:nth-child(4) {
+  animation-delay: 0.18s;
+}
+.stagger > *:nth-child(5) {
+  animation-delay: 0.23s;
+}
+.stagger > *:nth-child(6) {
+  animation-delay: 0.28s;
+}
 
 /* ---------- Sidebar nav mount ---------- */
-.nav-item { animation: slideIn 0.4s var(--ease-out) both; }
-.nav-item:nth-child(1) { animation-delay: 0.02s; }
-.nav-item:nth-child(2) { animation-delay: 0.05s; }
-.nav-item:nth-child(3) { animation-delay: 0.08s; }
-.nav-item:nth-child(4) { animation-delay: 0.11s; }
-.nav-item:nth-child(5) { animation-delay: 0.14s; }
-.nav-item:nth-child(6) { animation-delay: 0.17s; }
-.nav-item:nth-child(7) { animation-delay: 0.20s; }
-.nav-item:nth-child(8) { animation-delay: 0.23s; }
-.nav-item:nth-child(9) { animation-delay: 0.26s; }
-@keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+.nav-item {
+  animation: slideIn 0.4s var(--ease-out) both;
+}
+.nav-item:nth-child(1) {
+  animation-delay: 0.02s;
+}
+.nav-item:nth-child(2) {
+  animation-delay: 0.05s;
+}
+.nav-item:nth-child(3) {
+  animation-delay: 0.08s;
+}
+.nav-item:nth-child(4) {
+  animation-delay: 0.11s;
+}
+.nav-item:nth-child(5) {
+  animation-delay: 0.14s;
+}
+.nav-item:nth-child(6) {
+  animation-delay: 0.17s;
+}
+.nav-item:nth-child(7) {
+  animation-delay: 0.2s;
+}
+.nav-item:nth-child(8) {
+  animation-delay: 0.23s;
+}
+.nav-item:nth-child(9) {
+  animation-delay: 0.26s;
+}
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
 
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-        animation-duration: 0.001ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.001ms !important;
-    }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
